@@ -3,57 +3,151 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#ECEDEF">
-    <meta name="description" content="A lightweight calculator for basic arithmetic, with keyboard support.">
-    <title>JavaScript Calculator</title>
+    <meta name="theme-color" content="#f5f6fb">
+    <meta name="description" content="Calcora is a clean, private calculator with live previews, calculation history, and keyboard support.">
+    <meta name="color-scheme" content="light dark">
+    <title>Calcora — A clearer way to calculate</title>
     <link rel="stylesheet" href="style.css">
+    <script src="main.js" defer></script>
 </head>
 <body>
-    <main class="container" aria-label="Calculator">
-        <div class="display">
-            <input
-                id="displayResult"
-                type="text"
-                placeholder="0"
-                aria-label="Calculator display"
-                aria-live="polite"
-                readonly
-            >
-        </div>
-        <div class="buttons">
-            <div class="row">
-                <input type="button" class="utility" value="C" data-action="clear" aria-label="Clear">
-                <input type="button" class="utility" value="⌫" data-action="backspace" aria-label="Backspace">
-                <input type="button" value="(" data-value="(" aria-label="Open parenthesis">
-                <input type="button" value=")" data-value=")" aria-label="Close parenthesis">
+    <div class="app-shell">
+        <header class="topbar">
+            <a class="brand" href="./" aria-label="Calcora home">
+                <span class="brand-mark" aria-hidden="true">c</span>
+                <span class="brand-name">calcora</span>
+            </a>
+
+            <div class="topbar-actions">
+                <span class="privacy-note"><span class="privacy-dot" aria-hidden="true"></span> Private by default</span>
+                <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to dark theme" aria-pressed="false">
+                    <span class="theme-symbol" aria-hidden="true">☾</span>
+                    <span class="theme-label">Dark mode</span>
+                </button>
             </div>
-            <div class="row">
-                <input type="button" value="7" data-value="7">
-                <input type="button" value="8" data-value="8">
-                <input type="button" value="9" data-value="9">
-                <input type="button" value="+" data-value="+" aria-label="Add">
-            </div>
-            <div class="row">
-                <input type="button" value="4" data-value="4">
-                <input type="button" value="5" data-value="5">
-                <input type="button" value="6" data-value="6">
-                <input type="button" value="−" data-value="-" aria-label="Subtract">
-            </div>
-            <div class="row">
-                <input type="button" value="1" data-value="1">
-                <input type="button" value="2" data-value="2">
-                <input type="button" value="3" data-value="3">
-                <input type="button" value="×" data-value="*" aria-label="Multiply">
-            </div>
-            <div class="row">
-                <input type="button" value="0" data-value="0">
-                <input type="button" value="." data-value="." aria-label="Decimal point">
-                <input type="button" value="÷" data-value="/" aria-label="Divide">
-                <input type="button" class="red" value="=" data-action="equals" aria-label="Equals">
-            </div>
-        </div>
-        <p class="keyboard-hint">Keyboard: numbers and operators · Enter to calculate · Esc to clear</p>
-    </main>
-    <script src="main.js" defer></script>
+        </header>
+
+        <main class="workspace">
+            <section class="main-column" aria-labelledby="pageTitle">
+                <div class="page-heading">
+                    <div>
+                        <p class="eyebrow">A LITTLE MORE CLARITY, EVERY DAY</p>
+                        <h1 id="pageTitle">Numbers, <span>made simple.</span></h1>
+                        <p class="heading-copy">A focused space for quick calculations. No clutter, just the answer.</p>
+                    </div>
+                    <span class="mode-chip"><span class="mode-chip-dot" aria-hidden="true"></span> Standard calculator</span>
+                </div>
+
+                <section class="calculator-card" aria-label="Calculator">
+                    <div class="calculator-card-header">
+                        <div class="calculator-status">
+                            <span class="status-indicator" aria-hidden="true"></span>
+                            <span>CALCULATOR</span>
+                        </div>
+                        <span class="card-caption">Your workspace</span>
+                    </div>
+
+                    <div class="display-panel" aria-label="Calculation display">
+                        <div class="display-meta">
+                            <span>EXPRESSION</span>
+                            <span class="preview-indicator"><span aria-hidden="true"></span> LIVE PREVIEW</span>
+                        </div>
+                        <p class="expression-display" id="expressionDisplay">Start with a number</p>
+                        <div class="result-line">
+                            <span class="result-equals" aria-hidden="true">=</span>
+                            <output class="result-display" id="resultDisplay" aria-live="polite" aria-atomic="true">0</output>
+                        </div>
+                        <p class="display-message" id="displayMessage" role="status">Ready when you are</p>
+                    </div>
+
+                    <div class="keypad-area">
+                        <div class="utility-strip" aria-label="Calculator functions">
+                            <button class="key key-utility key-clear" type="button" data-action="clear" aria-label="All clear">AC</button>
+                            <button class="key key-utility" type="button" data-value="(" aria-label="Open parenthesis">(</button>
+                            <button class="key key-utility" type="button" data-value=")" aria-label="Close parenthesis">)</button>
+                            <button class="key key-utility" type="button" data-value="%" aria-label="Percent">%</button>
+                            <button class="key key-utility key-delete" type="button" data-action="backspace" aria-label="Backspace" title="Backspace">
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5H20V19H9L3 12L9 5Z"></path><path d="M12 9L17 14M17 9L12 14"></path></svg>
+                            </button>
+                        </div>
+
+                        <div class="keypad-grid" id="keypad" aria-label="Number pad">
+                            <button class="key key-number" type="button" data-value="7">7</button>
+                            <button class="key key-number" type="button" data-value="8">8</button>
+                            <button class="key key-number" type="button" data-value="9">9</button>
+                            <button class="key key-operator" type="button" data-value="/" aria-label="Divide">÷</button>
+
+                            <button class="key key-number" type="button" data-value="4">4</button>
+                            <button class="key key-number" type="button" data-value="5">5</button>
+                            <button class="key key-number" type="button" data-value="6">6</button>
+                            <button class="key key-operator" type="button" data-value="*" aria-label="Multiply">×</button>
+
+                            <button class="key key-number" type="button" data-value="1">1</button>
+                            <button class="key key-number" type="button" data-value="2">2</button>
+                            <button class="key key-number" type="button" data-value="3">3</button>
+                            <button class="key key-operator" type="button" data-value="-" aria-label="Subtract">−</button>
+
+                            <button class="key key-utility" type="button" data-action="toggle-sign" aria-label="Toggle sign">±</button>
+                            <button class="key key-number key-zero" type="button" data-value="0">0</button>
+                            <button class="key key-number" type="button" data-value="." aria-label="Decimal point">.</button>
+                            <button class="key key-operator" type="button" data-value="+" aria-label="Add">+</button>
+                        </div>
+
+                        <button class="equals-button" type="button" data-action="equals">
+                            <span>Calculate</span>
+                            <span class="equals-symbol" aria-hidden="true">=</span>
+                        </button>
+
+                        <div class="keyboard-hint">
+                            <span>Keyboard ready</span>
+                            <span><kbd>Enter</kbd> calculate <i aria-hidden="true">·</i> <kbd>Esc</kbd> clear</span>
+                        </div>
+                    </div>
+                </section>
+
+                <p class="page-footnote"><span aria-hidden="true">✦</span> Your calculations stay in this browser.</p>
+            </section>
+
+            <aside class="side-column" aria-label="Calculation tools">
+                <section class="history-card" aria-labelledby="historyTitle">
+                    <div class="side-card-heading">
+                        <div>
+                            <p class="eyebrow">YOUR SESSION</p>
+                            <h2 id="historyTitle">Recent history</h2>
+                        </div>
+                        <button class="text-button" id="clearHistory" type="button" disabled>Clear all</button>
+                    </div>
+                    <p class="history-description">Pick up where you left off. Your latest calculations appear here.</p>
+                    <div class="history-list" id="historyList" aria-live="polite">
+                        <div class="history-empty">
+                            <span class="history-empty-icon" aria-hidden="true">↗</span>
+                            <strong>No calculations yet</strong>
+                            <span>Your results will show up here.</span>
+                        </div>
+                    </div>
+                    <div class="history-footer">
+                        <span class="history-count" id="historyCount">0 saved</span>
+                        <span>Stored on this device</span>
+                    </div>
+                </section>
+
+                <section class="shortcuts-card" aria-labelledby="shortcutsTitle">
+                    <div class="shortcuts-icon" aria-hidden="true">⌘</div>
+                    <div class="shortcuts-content">
+                        <h2 id="shortcutsTitle">Work at your pace</h2>
+                        <p>Use your keyboard for a quicker flow.</p>
+                        <div class="shortcut-row"><span>Calculate</span><kbd>Enter</kbd></div>
+                        <div class="shortcut-row"><span>Delete one</span><kbd>⌫</kbd></div>
+                        <div class="shortcut-row"><span>Start over</span><kbd>Esc</kbd></div>
+                    </div>
+                </section>
+            </aside>
+        </main>
+
+        <footer class="site-footer">
+            <span>Calcora <span class="footer-separator">/</span> Simple by design.</span>
+            <span>Built for the everyday.</span>
+        </footer>
+    </div>
 </body>
 </html>
