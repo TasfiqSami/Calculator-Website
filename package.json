@@ -1,0 +1,9 @@
+{
+  "name": "calculator-website",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A lightweight browser calculator with safe arithmetic parsing.",
+  "scripts": {
+    "test": "node --test"
+  }
+}
