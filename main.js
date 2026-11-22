@@ -160,6 +160,30 @@ if (typeof document !== 'undefined') {
         }).format(value);
     }
 
+    function toPlainNumber(value) {
+        const text = String(value);
+        if (!/[eE]/.test(text)) return text;
+
+        const [coefficient, exponentText] = text.toLowerCase().split('e');
+        const exponent = Number(exponentText);
+        const negative = coefficient.startsWith('-');
+        const unsigned = negative ? coefficient.slice(1) : coefficient;
+        const [whole, fraction = ''] = unsigned.split('.');
+        const digits = whole + fraction;
+        const decimalPosition = whole.length + exponent;
+        let expanded;
+
+        if (decimalPosition <= 0) {
+            expanded = '0.' + '0'.repeat(-decimalPosition) + digits;
+        } else if (decimalPosition >= digits.length) {
+            expanded = digits + '0'.repeat(decimalPosition - digits.length);
+        } else {
+            expanded = digits.slice(0, decimalPosition) + '.' + digits.slice(decimalPosition);
+        }
+
+        return (negative ? '-' : '') + expanded;
+    }
+
     function readStoredHistory() {
         try {
             const stored = JSON.parse(window.localStorage.getItem(historyKey) || '[]');
@@ -239,7 +263,7 @@ if (typeof document !== 'undefined') {
             });
         }
 
-        historyCount.textContent = history.length + (history.length === 1 ? ' saved' : ' saved');
+        historyCount.textContent = history.length + ' saved';
         clearHistoryButton.disabled = history.length === 0;
     }
 
@@ -325,7 +349,7 @@ if (typeof document !== 'undefined') {
         try {
             const originalExpression = expressionValue;
             const result = evaluateExpression(originalExpression);
-            const resultText = String(result);
+            const resultText = toPlainNumber(result);
 
             history.unshift({
                 expression: originalExpression,
